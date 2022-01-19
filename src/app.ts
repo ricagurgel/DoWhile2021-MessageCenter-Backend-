@@ -21,13 +21,13 @@ const io = new Server(serverHttp,  {         //então eu passo o app para dentro
 })       
 
 io.on("connection", socket => {
-  console.log(`usuário conectado no socket: ${socket.id}`);
+//  console.log(`usuário conectado no socket: ${socket.id}`);
 })
 
 app.use(express.json())
 app.use(router)
 
-
+/*
 app.get('/github', (request, response) => {
   response.redirect(`https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}`)
 })
@@ -37,7 +37,7 @@ app.get('/signin/callback', (request, response) => {
 
   response.send(code);
 })
-
+ */
 
 
 

@@ -69,8 +69,11 @@ interface iUserResponse {
 }
 
 class authenticateUserService {
-  async execute(code: string) {
+  async execute(code: string, platform: string) {
     const url = 'https://github.com/login/oauth/access_token' //requisitar o access_token do github
+
+
+
 
     //
     //
@@ -89,12 +92,24 @@ class authenticateUserService {
     // e agora, neste caso, remomeei para accessTokenResponse e assim posso usar 👉accessTokenResponse.access_token👈
     // Ai está um pouco mais das vantagens do Typescript
     ///////////
+    const mobile = platform == 'mobile'
+    const web = platform == 'web'
+
     const { data: accessTokenResponse } =
+    
       await axios.post<iAccessTokenResponse>(url, null, {
         //🔗olha aqui a interface
         params: {
-          client_id: process.env.GITHUB_CLIENT_ID,
-          client_secret: process.env.GITHUB_CLIENT_SECRET,
+//          client_id: process.env.GITHUB_CLIENT_ID,
+//          client_secret: process.env.GITHUB_CLIENT_SECRET,
+          ...(mobile ? {
+            client_id: process.env.MOB_GITHUB_CLIENT_ID,
+            client_secret: process.env.MOB_GITHUB_CLIENT_SECRET,
+          }:{}),
+          ...(web ? {
+            client_id: process.env.WEB_GITHUB_CLIENT_ID,
+            client_secret: process.env.WEB_GITHUB_CLIENT_SECRET,
+          }:{}),
           code
         },
         headers: {
@@ -132,7 +147,7 @@ class authenticateUserService {
         }
       })
     } else {
-      console.log(user)
+      //console.log(user)
     }
 
     // cria token próprio que expira em 1 dia
